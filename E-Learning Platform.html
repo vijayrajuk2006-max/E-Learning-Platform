@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Learning Platform</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f6f9;
+}
+
+header{
+background:#2563eb;
+color:#fff;
+padding:20px;
+text-align:center;
+}
+
+.container{
+width:90%;
+max-width:1200px;
+margin:20px auto;
+}
+
+.controls{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+input{
+flex:1;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.stat-card{
+background:#fff;
+padding:20px;
+border-radius:10px;
+text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.courses{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+.course{
+background:#fff;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.course img{
+width:100%;
+height:180px;
+object-fit:cover;
+}
+
+.course-content{
+padding:15px;
+}
+
+.course h3{
+margin-bottom:10px;
+}
+
+.course p{
+color:#555;
+margin-bottom:10px;
+}
+
+.progress{
+width:100%;
+height:10px;
+background:#ddd;
+border-radius:5px;
+overflow:hidden;
+margin:10px 0;
+}
+
+.progress-bar{
+height:100%;
+background:#22c55e;
+width:0%;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+background:#2563eb;
+color:white;
+margin-top:10px;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>🎓 E-Learning Platform</h1>
+<p>Learn New Skills Anytime, Anywhere</p>
+</header>
+
+<div class="container">
+
+<div class="controls">
+<input type="text" id="search" placeholder="Search courses...">
+</div>
+
+<div class="stats">
+<div class="stat-card">
+<h2 id="totalCourses">6</h2>
+<p>Total Courses</p>
+</div>
+
+<div class="stat-card">
+<h2 id="enrolledCount">0</h2>
+<p>Enrolled</p>
+</div>
+
+<div class="stat-card">
+<h2 id="completedCount">0</h2>
+<p>Completed</p>
+</div>
+</div>
+
+<div class="courses" id="courseContainer"></div>
+
+</div>
+
+<script>
+
+const courses=[
+
+{
+title:"HTML & CSS",
+image:"https://picsum.photos/400/250?1",
+desc:"Learn website design from scratch.",
+progress:0,
+enrolled:false
+},
+
+{
+title:"JavaScript",
+image:"https://picsum.photos/400/250?2",
+desc:"Master modern JavaScript.",
+progress:0,
+enrolled:false
+},
+
+{
+title:"Python Programming",
+image:"https://picsum.photos/400/250?3",
+desc:"Learn Python for AI & Automation.",
+progress:0,
+enrolled:false
+},
+
+{
+title:"Machine Learning",
+image:"https://picsum.photos/400/250?4",
+desc:"Introduction to ML algorithms.",
+progress:0,
+enrolled:false
+},
+
+{
+title:"React JS",
+image:"https://picsum.photos/400/250?5",
+desc:"Build modern web applications.",
+progress:0,
+enrolled:false
+},
+
+{
+title:"Node.js",
+image:"https://picsum.photos/400/250?6",
+desc:"Backend development using Node.",
+progress:0,
+enrolled:false
+}
+
+];
+
+function displayCourses(data){
+
+const container=document.getElementById("courseContainer");
+
+container.innerHTML="";
+
+data.forEach((course,index)=>{
+
+container.innerHTML+=`
+
+<div class="course">
+
+<img src="${course.image}">
+
+<div class="course-content">
+
+<h3>${course.title}</h3>
+
+<p>${course.desc}</p>
+
+<div class="progress">
+
+<div class="progress-bar"
+style="width:${course.progress}%">
+</div>
+
+</div>
+
+<p>${course.progress}% Completed</p>
+
+<button onclick="enroll(${index})">
+
+${course.enrolled?"Continue Learning":"Enroll"}
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+updateStats();
+
+}
+
+function enroll(index){
+
+courses[index].enrolled=true;
+
+if(courses[index].progress<100){
+
+courses[index].progress+=20;
+
+}
+
+displayCourses(courses);
+
+}
+
+function updateStats(){
+
+const enrolled=courses.filter(c=>c.enrolled).length;
+
+const completed=courses.filter(c=>c.progress===100).length;
+
+document.getElementById("enrolledCount").innerText=enrolled;
+
+document.getElementById("completedCount").innerText=completed;
+
+}
+
+document.getElementById("search").addEventListener("input",function(){
+
+const text=this.value.toLowerCase();
+
+const filtered=courses.filter(c=>
+
+c.title.toLowerCase().includes(text)
+
+);
+
+displayCourses(filtered);
+
+});
+
+displayCourses(courses);
+
+</script>
+
+</body>
+</html>
